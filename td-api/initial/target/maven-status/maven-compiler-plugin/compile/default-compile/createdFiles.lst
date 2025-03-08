@@ -1,5 +1,7 @@
-com/example/springboot/repository/TaskRepository.class
 com/example/springboot/Application.class
-com/example/springboot/model/Task.class
+CorsConfig.class
 com/example/springboot/controller/TaskController.class
+CorsConfig$1.class
+com/example/springboot/persistence/TaskRepository.class
+com/example/springboot/model/Task.class
 com/example/springboot/service/TaskService.class

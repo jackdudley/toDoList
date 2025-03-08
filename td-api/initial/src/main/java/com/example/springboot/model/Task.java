@@ -13,17 +13,28 @@ public class Task {
     private String content;
     private boolean completed;
     private int task_length;
+    @Column(name = "dueDate")
+    private String dueDate;
 
     public Task() {
     }
 
-    public Task(Long id, String content, boolean completed, int task_length) {
+    public Task(Long id, String content, boolean completed, int task_length, String dueDate) {
         this.id = id;
         this.content = content;
         this.completed = completed;
         this.task_length = task_length;
+        this.dueDate = dueDate;
     }
 
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
     
     public Long getId() {
         return id;
