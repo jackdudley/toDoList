@@ -9,18 +9,39 @@ import { TaskServiceService } from '../task-service.service';
 })
 export class CurrListComponent {
   
+  tasks: Task[] =[]
   newTitle: string = ""
   newLength: number = 0;
   showDia: boolean = false;
   creationSucess: boolean = false;
 
-  // Inject Tasks service into constructor
   constructor(private taskService: TaskServiceService) {}
 
   ngOnInit() {
     this.taskService.getTasks();
   }
 
+  getTasks(): void {
+    this.taskService.getTasks()
+      .subscribe(tasks => this.tasks = tasks);
+  }
+
+  showDialaugue() {
+    this.showDia = true;
+  }
+
+  countTime() {
+    for(let i = 0; i < this.tasks.length; i++) {
+      this.newLength += this.tasks[i].task_length;
+    }
+  }
+
+  submit() {
+    
+  }
+
+
   
   
+
 }

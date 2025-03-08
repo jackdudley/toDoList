@@ -1,6 +1,6 @@
 <ul>
-    <li *ngFor="let task of taskList">
-        <p>{{task.title}} and has a length of {{task.length}} minutes</p>
+    <li *ngFor="let task of tasks">
+        <p>{{task.content}} and has a length of {{task.content}} minutes</p>
     </li>
 </ul>
 <button (click)="showDialaugue()">Add Task</button>
