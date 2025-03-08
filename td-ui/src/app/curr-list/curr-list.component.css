@@ -1,0 +1,38 @@
+p:hover {
+    background-color: rgb(176, 141, 141);
+    cursor: pointer;
+}
+
+ul {
+    list-style: circle;
+}
+
+#taskBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 30vw;
+    background-color: grey;
+    color: black;
+    height:30vw;
+    
+}
+
+#taskBar input {
+    background-color: inherit;
+    color: inherit;
+}
+
+#taskBar::placeholder {
+    color: inherit;
+}
+
+#taskBar span {
+    position: absolute; 
+    top: 10px; /* Adjust as needed */
+    right: -400px; 
+    font-size: x-large;
+    color: indianred;
+    display: inline;
+    cursor: pointer;
+}

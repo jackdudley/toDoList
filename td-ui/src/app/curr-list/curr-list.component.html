@@ -1,0 +1,17 @@
+<ul>
+    <li *ngFor="let task of taskList">
+        <p>{{task.title}} and has a length of {{task.length}} minutes</p>
+    </li>
+</ul>
+<button (click)="showDialaugue()">Add Task</button>
+<div id="taskBar" *ngIf="showDia">
+    <span (click)="showDialaugue()">x</span>
+    <label for="newTitle">Task Title:</label>
+    <input type="text" [(ngModel)]="newTitle" placeholder="Task Title">
+    <label for="newLength">Task Length:</label>
+    <input type="number" [(ngModel)]="newLength" placeholder="Task Length">
+    <button (click)="submit()">Submit!</button>
+</div> 
+<p>Total Time: {{countTime()}}</p>
+<p *ngIf="creationSucess">Task Added Successfully!</p>
+
