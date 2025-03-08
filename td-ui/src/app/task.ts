@@ -1,4 +1,6 @@
 export interface Task {
-    title: string;
-    length: number;
+    id: number;
+    content: string;
+    completed: boolean;
+    task_length: number;
 }
