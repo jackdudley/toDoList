@@ -1,4 +1,5 @@
-Task.class
+com/example/springboot/repository/TaskRepository.class
 com/example/springboot/Application.class
-com/example/springboot/TaskController.class
+com/example/springboot/model/Task.class
+com/example/springboot/controller/TaskController.class
 com/example/springboot/service/TaskService.class
