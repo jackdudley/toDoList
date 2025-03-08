@@ -1,14 +1,45 @@
-package com.example.springboot;
+package com.example.springboot.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.springboot.model.Task;
+import org.springframework.web.bind.annotation.*;
+import com.example.springboot.persistence.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
+    
+    private final TaskRepository taskRepository;
 
-	@GetMapping("/")
-	public String index() {
-		return "Greetings from Spring Boot!";
-	}
+    public TaskController(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
+    @GetMapping
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return taskRepository.save(task);
+    }
+
+    // ✅ PUT - Update a task
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
+        return taskRepository.findById(id).map(task -> {
+            task.setContent(taskDetails.getContent());
+            task.setCompleted(taskDetails.getCompleted());
+            return taskRepository.save(task);
+        }).orElseThrow(() -> new RuntimeException("Task not found with id " + id));
+    }
+
+    // ✅ DELETE - Remove a task
+    @DeleteMapping("/{id}")
+    public String deleteTask(@PathVariable Long id) {
+        taskRepository.deleteById(id);
+        return "Task with ID " + id + " deleted!";
+    }
 }
