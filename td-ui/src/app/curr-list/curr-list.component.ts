@@ -10,7 +10,6 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class CurrListComponent {
   
-  tasks: Observable<Task[]> = this.taskService.tasks$;
   newTitle: string = ""
   newLength: number = 0;
   showDia: boolean = false;
@@ -19,6 +18,11 @@ export class CurrListComponent {
   selectedTask: Task = { id: 0, content: "", completed: false, task_length: 0, dueDate: "" };
 
   constructor(private taskService: TaskServiceService, private cdRef: ChangeDetectorRef) {}
+
+
+  getTaskService() {
+    return this.taskService;
+  }
 
   ngOnInit() {
     this.taskService.orderTasks();
@@ -63,9 +67,9 @@ export class CurrListComponent {
   }
 
   countTime(): Observable<Number> {
-    return this.tasks.pipe(
+    return this.taskService.tasks$.pipe(
       map((arr: Task[]) => arr.reduce((acc: number, task: Task) => acc + task.task_length, 0))
-    );
+    ); 
   }
 
   submit() {
@@ -86,16 +90,20 @@ export class CurrListComponent {
       dueDate: this.dueDate
     }
 
-    this.taskService.addTask(toSubmit).subscribe(
-      (data) => {
+    this.taskService.addTask(toSubmit).subscribe({
+      next: (data) => {
         console.log("Task added");
         this.creationSucess = true;
+        setTimeout(() => {
+          this.creationSucess = false;
+        }, 2000);
         this.getTasks();
+        this.showDia = false;
       },
-      (error) => {
+      error: () => {
         console.log("Error adding task");
       }
-    );
+    });    
   }
 
   deleteTask(id: number) {

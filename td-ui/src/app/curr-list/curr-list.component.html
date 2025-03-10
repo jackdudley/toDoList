@@ -1,11 +1,10 @@
 <ul>
-    <li *ngFor="let task of tasks | async">
+    <li *ngFor="let task of this.getTaskService().tasks$ | async">
         <img src="../../assets/circle.svg" alt="circle" (click)="deleteTask(task.id)">
         <div class="taskContent">
             <p (click)="updateDialague(task)">{{task.id}}: {{task.content}}</p>
             <div class="detail">{{task.task_length}}min and {{task.dueDate}}</div>
         </div>
-        
     </li>
 </ul>
 <button *ngIf="!showDia" (click)="showDialaugue()">Add Task</button>
