@@ -3,7 +3,6 @@ package com.example.springboot.controller;
 import com.example.springboot.model.Task;
 import org.springframework.web.bind.annotation.*;
 import com.example.springboot.persistence.*;
-
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -42,5 +41,11 @@ public class TaskController {
     public String deleteTask(@PathVariable Long id) {
         taskRepository.deleteById(id);
         return "Task with ID " + id + " deleted!";
+    }
+
+    @GetMapping("/order")
+    public List<Task> orderTasks() {
+        List<Task> tasks = taskRepository.findAllByOrderByDueDateAsc();
+        return tasks;
     }
 }

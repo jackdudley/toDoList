@@ -1,7 +1,9 @@
 package com.example.springboot.model;
 
 
+import java.time.LocalDate;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "tasks")
@@ -14,12 +16,13 @@ public class Task {
     private boolean completed;
     private int task_length;
     @Column(name = "dueDate")
-    private String dueDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M/d/yy") // Accepts "3/4/25"
+    private LocalDate dueDate;
 
     public Task() {
     }
 
-    public Task(Long id, String content, boolean completed, int task_length, String dueDate) {
+    public Task(Long id, String content, boolean completed, int task_length, LocalDate dueDate) {
         this.id = id;
         this.content = content;
         this.completed = completed;
@@ -28,11 +31,11 @@ public class Task {
     }
 
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
     
