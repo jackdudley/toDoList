@@ -1,38 +1,37 @@
-p:hover {
-    background-color: rgb(176, 141, 141);
-    cursor: pointer;
+li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid grey;
 }
 
-ul {
-    list-style: circle;
+img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
 }
 
-#taskBar {
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.classContent {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    width: 30vw;
-    background-color: grey;
-    color: black;
-    height:30vw;
-    
+    gap: 5px;
 }
 
-#taskBar input {
-    background-color: inherit;
-    color: inherit;
+.detail {
+    font-size: 0.9em;
+    color: grey;
+    flex-grow: 0; /* Pushes it to the right naturally */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-#taskBar::placeholder {
-    color: inherit;
-}
 
-#taskBar span {
-    position: absolute; 
-    top: 10px; /* Adjust as needed */
-    right: -400px; 
-    font-size: x-large;
-    color: indianred;
-    display: inline;
-    cursor: pointer;
-}

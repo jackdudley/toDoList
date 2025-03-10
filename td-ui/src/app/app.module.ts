@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { CurrListComponent } from './curr-list/curr-list.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TaskServiceService } from './task-service.service';
 
 @NgModule({
   declarations: [
@@ -17,9 +19,10 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     CommonModule,
     FormsModule,
+    HttpClientModule
     
   ],
-  providers: [],
+  providers: [HttpClientModule, HttpClient, TaskServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
