@@ -18,6 +18,7 @@ public class Task {
     @Column(name = "dueDate")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "M/d/yy") // Accepts "3/4/25"
     private LocalDate dueDate;
+    private String description;
 
     public Task() {
     }
@@ -30,6 +31,13 @@ public class Task {
         this.dueDate = dueDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public LocalDate getDueDate() {
         return dueDate;

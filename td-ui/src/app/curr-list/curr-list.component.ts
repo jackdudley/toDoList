@@ -11,11 +11,12 @@ import { ChangeDetectorRef } from '@angular/core';
 export class CurrListComponent {
   
   newTitle: string = ""
-  newLength: number = 0;
+  newLength: number | null = null;
   showDia: boolean = false;
   creationSucess: boolean = false;
   dueDate: string = "";
-  selectedTask: Task = { id: 0, content: "", completed: false, task_length: 0, dueDate: "" };
+  description: string = "";
+  selectedTask: Task = { id: 0, content: "", completed: false, task_length: 0, dueDate: "", description: ""};
 
   constructor(private taskService: TaskServiceService, private cdRef: ChangeDetectorRef) {}
 
@@ -36,10 +37,10 @@ export class CurrListComponent {
   showDialaugue() {
     if(this.showDia) {
       this.showDia = false;
-      this.newLength = 0;
+      this.newLength = null;
       this.newTitle = "";
       this.dueDate = "";
-      this.selectedTask = { id: 0, content: "", completed: false, task_length: 0, dueDate: "" };
+      this.selectedTask = { id: 0, content: "", completed: false, task_length: null, dueDate: "" , description: ""};
     } else {
       this.showDia = true;
     }
@@ -55,7 +56,7 @@ export class CurrListComponent {
       this.newLength = 0;
       this.newTitle = "";
       this.dueDate = "";
-      this.selectedTask = { id: 0, content: "", completed: false, task_length: 0, dueDate: "" };
+      this.selectedTask = { id: 0, content: "", completed: false, task_length: null, dueDate: "", description: ""};
     } else {
       this.showDia = true;
       this.selectedTask = task;
@@ -68,7 +69,7 @@ export class CurrListComponent {
 
   countTime(): Observable<Number> {
     return this.taskService.tasks$.pipe(
-      map((arr: Task[]) => arr.reduce((acc: number, task: Task) => acc + task.task_length, 0))
+      map((arr: Task[]) => arr.reduce((acc: number, task: Task) => acc + (task.task_length ?? 0), 0))
     ); 
   }
 
@@ -87,7 +88,8 @@ export class CurrListComponent {
       content: this.newTitle,
       completed: false,
       task_length: this.newLength,
-      dueDate: this.dueDate
+      dueDate: this.dueDate,
+      description: this.description
     }
 
     this.taskService.addTask(toSubmit).subscribe({
@@ -116,9 +118,5 @@ export class CurrListComponent {
     this.taskService.updateTask(task).subscribe();
     this.getTasks();
   }
-
-
-  
-  
 
 }
