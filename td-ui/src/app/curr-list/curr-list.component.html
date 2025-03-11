@@ -1,4 +1,4 @@
-<ul>
+<ul class="taskAlign">
     <li *ngFor="let task of this.getTaskService().tasks$ | async">
         <img src="../../assets/circle.svg" alt="circle" (click)="deleteTask(task.id)">
         <div class="taskContent">
@@ -19,6 +19,6 @@
     <button (click)="showDialaugue()">Cancel</button>
 
 </div> 
-<p>Total Time: {{countTime() | async}} minutes</p>
-<p *ngIf="creationSucess">Task Added Successfully!</p>
+<p class="taskContent" >Total Time: {{countTime() | async}} minutes</p>
+<p class="taskContent" *ngIf="creationSucess">Task Added Successfully!</p>
 

@@ -1,0 +1,11 @@
+.flexContainerMain{
+    display: flex;
+}
+
+app-side-bar {
+    flex-basis: 35%;
+}
+
+curr-list {
+    flex-grow: 1;
+}

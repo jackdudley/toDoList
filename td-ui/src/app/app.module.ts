@@ -8,11 +8,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TaskServiceService } from './task-service.service';
+import { SideBarComponent } from './side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CurrListComponent
+    CurrListComponent,
+    SideBarComponent
   ],
   imports: [
     BrowserModule,
