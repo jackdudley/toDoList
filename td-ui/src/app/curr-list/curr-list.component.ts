@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Task } from '../task';
-import { Observable, of, from, map, tap } from 'rxjs';
+import { Observable, of, from, map, tap, take, BehaviorSubject, switchMap } from 'rxjs';
 import { TaskServiceService } from '../task-service.service';
 import { ChangeDetectorRef } from '@angular/core';
 @Component({
@@ -16,8 +16,9 @@ export class CurrListComponent {
   creationSucess: boolean = false;
   dueDate: string = "";
   description: string = "";
-  selectedTask: Task = { id: 0, content: "", completed: false, task_length: 0, dueDate: "", description: ""};
+  selectedTask: BehaviorSubject<Task> = new BehaviorSubject<Task>({ id: 0, content: "", completed: false, task_length: null, dueDate: "", description: ""});
 
+  
   constructor(private taskService: TaskServiceService, private cdRef: ChangeDetectorRef) {}
 
 
@@ -40,31 +41,30 @@ export class CurrListComponent {
       this.newLength = null;
       this.newTitle = "";
       this.dueDate = "";
-      this.selectedTask = { id: 0, content: "", completed: false, task_length: null, dueDate: "" , description: ""};
+      this.description = "";
     } else {
       this.showDia = true;
+      var task: Task = this.selectedTask.getValue();
+      if(task.id != 0) {
+        this.newLength = task.task_length;
+        this.newTitle = task.content;
+        this.dueDate = task.dueDate;
+        this.description = task.description;
+      }
     }
   }
 
   upAdd() {
-    return this.selectedTask.id ? "Update" : "Add";
+    console.log("ua called")
+    return this.selectedTask.getValue().id!=0 ? "Update" : "Add";
   }
 
-  updateDialague(task: Task) {
-    if(this.showDia) {
-      this.showDia = false;
-      this.newLength = 0;
-      this.newTitle = "";
-      this.dueDate = "";
-      this.selectedTask = { id: 0, content: "", completed: false, task_length: null, dueDate: "", description: ""};
-    } else {
-      this.showDia = true;
-      this.selectedTask = task;
-      this.cdRef.detectChanges();
-      this.newTitle = task.content;
-      this.newLength = task.task_length;
-      this.dueDate = task.dueDate;
-    }
+  updateClick(id: number) {
+    return this.taskService.getTask(id).subscribe(task => {
+      this.selectedTask.next(task);
+      console.log(task);
+      this.showDialaugue()
+    })
   }
 
   countTime(): Observable<Number> {
@@ -74,27 +74,43 @@ export class CurrListComponent {
   }
 
   submit() {
-
-    if(this.selectedTask.id != 0) {
-      this.updateTask(this.selectedTask);
-      this.newLength = 0;
-      this.newTitle = "";
-      this.dueDate = "";
-      return;
-    }
-
-    let toSubmit: Task =  {
-      id: 0,
-      content: this.newTitle,
-      completed: false,
-      task_length: this.newLength,
-      dueDate: this.dueDate,
-      description: this.description
-    }
-
-    this.taskService.addTask(toSubmit).subscribe({
-      next: (data) => {
-        console.log("Task added");
+    this.selectedTask.pipe(
+      take(1),
+      switchMap(task => {
+        if (task.id) {
+          return this.taskService.updateTask({
+            id: task.id,
+            content: this.newTitle,
+            completed: false,
+            task_length: this.newLength,
+            dueDate: this.dueDate,
+            description: this.description
+          }).pipe(
+            tap(() => { 
+              this.selectedTask.next({
+                id: 0,
+                content: '',
+                completed: false,
+                task_length: 0,
+                dueDate: '',
+                description: ''
+              });
+            })
+          );
+        } else {
+          return this.taskService.addTask({
+            id: 0,
+            content: this.newTitle,
+            completed: false,
+            task_length: this.newLength,
+            dueDate: this.dueDate,
+            description: this.description
+          });
+        }
+      })
+    ).subscribe({
+      next: () => {
+        console.log("Task processed successfully");
         this.creationSucess = true;
         setTimeout(() => {
           this.creationSucess = false;
@@ -103,10 +119,10 @@ export class CurrListComponent {
         this.showDia = false;
       },
       error: () => {
-        console.log("Error adding task");
+        console.log("Error processing task");
       }
-    });    
-  }
+    });
+  }    
 
   deleteTask(id: number) {
     console.log("Deleting task with id: " + id);
@@ -115,7 +131,9 @@ export class CurrListComponent {
   }
 
   updateTask(task: Task) {
-    this.taskService.updateTask(task).subscribe();
+    this.taskService.updateTask(task).subscribe(data => {
+      console.log(data);
+    });
     this.getTasks();
   }
 

@@ -44,5 +44,9 @@ export class TaskServiceService {
     return this.http.put<Task>(this.requestURL + '/' + task.id, task, this.httpOptions);
   }
 
+  getTask(id: number) {
+    return this.http.get<Task>(this.requestURL + "/" + id);
+  }
+
   
 }

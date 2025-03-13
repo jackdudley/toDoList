@@ -4,7 +4,7 @@
         <li *ngFor="let task of this.getTaskService().tasks$ | async">
             <img src="../../assets/circle.svg" alt="circle" (click)="deleteTask(task.id)">
             <div>
-                <p (click)="updateDialague(task)">{{task.id}}: {{task.content}}</p>
+                <p (click)="updateClick(task.id)">{{task.id}}: {{task.content}}</p>
                 <div class="detail">{{task.description}}</div>
                 <div class="detail">{{task.task_length}}min and {{task.dueDate}}</div>
             </div>
@@ -20,6 +20,6 @@
             <button (click)="submit()">{{upAdd()}} Task!</button>
             <button (click)="showDialaugue()">Cancel</button>
         </div> 
-        <p class="taskAlign" *ngIf="creationSucess">Task Added Successfully!</p>  
+        <p class="taskAlign" *ngIf="creationSucess">Success!</p>  
     </div>
 </div>
