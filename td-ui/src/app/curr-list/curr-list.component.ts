@@ -19,11 +19,11 @@ export class CurrListComponent {
   selectedTask: BehaviorSubject<Task> = new BehaviorSubject<Task>({ id: 0, content: "", completed: false, task_length: null, dueDate: "", description: ""});
 
   
-  constructor(private taskService: TaskServiceService, private cdRef: ChangeDetectorRef) {}
+  constructor(private taskService: TaskServiceService) {}
 
 
-  getTaskService() {
-    return this.taskService;
+  get tasks$() {
+    return this.taskService.tasks$;
   }
 
   ngOnInit() {
@@ -115,7 +115,6 @@ export class CurrListComponent {
         setTimeout(() => {
           this.creationSucess = false;
         }, 2000);
-        this.getTasks();
         this.showDia = false;
       },
       error: () => {
@@ -127,14 +126,12 @@ export class CurrListComponent {
   deleteTask(id: number) {
     console.log("Deleting task with id: " + id);
     this.taskService.deleteTask(id).subscribe();
-    this.getTasks();
   }
 
   updateTask(task: Task) {
     this.taskService.updateTask(task).subscribe(data => {
       console.log(data);
     });
-    this.getTasks();
   }
 
 }

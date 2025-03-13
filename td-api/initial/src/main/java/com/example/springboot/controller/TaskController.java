@@ -27,13 +27,14 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        return ResponseEntity.ok(taskRepository.save(task));
+    public ResponseEntity<List<Task>> createTask(@RequestBody Task task) {
+        taskRepository.save(task);
+        return ResponseEntity.ok(taskRepository.findAll());
     }
 
     // ✅ PUT - Update a task
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
+    public ResponseEntity<List<Task>> updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
         Optional<Task> task = taskRepository.findById(id);
         if(task.isPresent()) {
             task.get().setContent(taskDetails.getContent());
@@ -41,7 +42,7 @@ public class TaskController {
             task.get().setDueDate(taskDetails.getDueDate());
             task.get().setDescription(taskDetails.getDescription());
             taskRepository.save(task.get());
-            return ResponseEntity.ok(task.get());
+            return ResponseEntity.ok(taskRepository.findAll());
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -55,16 +56,19 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        return taskRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Task> task = taskRepository.findById(id);
+        if(task.isPresent()) {
+            return ResponseEntity.ok(task.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<List<Task>> deleteTask(@PathVariable Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(taskRepository.findAll());
         } else {
             return ResponseEntity.notFound().build();
         }

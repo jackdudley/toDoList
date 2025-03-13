@@ -1,7 +1,7 @@
 <div id="flexContainerCurrList">
     <p >Total Time: {{countTime() | async}} minutes</p>
     <ul>
-        <li *ngFor="let task of this.getTaskService().tasks$ | async">
+        <li *ngFor="let task of tasks$ | async">
             <img src="../../assets/circle.svg" alt="circle" (click)="deleteTask(task.id)">
             <div>
                 <p (click)="updateClick(task.id)">{{task.id}}: {{task.content}}</p>
@@ -23,3 +23,4 @@
         <p class="taskAlign" *ngIf="creationSucess">Success!</p>  
     </div>
 </div>
+3

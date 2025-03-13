@@ -32,21 +32,39 @@ export class TaskServiceService {
     ).subscribe();
   }
 
-  addTask(task: Task) {
-    return this.http.post<Task>(this.requestURL, task, this.httpOptions);
+  addTask(task: Task): Observable<Task[]> { 
+    return this.http.post<Task[]>(this.requestURL, task, this.httpOptions).pipe(
+      tap((updatedTasks) => {
+        if (JSON.stringify(this.tasks.getValue()) !== JSON.stringify(updatedTasks)) {
+          this.tasks.next(updatedTasks);
+        }
+      })
+    );
+  }
+  
+
+  deleteTask(id: number): Observable<Task[]> { 
+    return this.http.delete<Task[]>(`${this.requestURL}/${id}`, this.httpOptions).pipe(
+      tap(updatedTasks => {
+        if (JSON.stringify(this.tasks.getValue()) !== JSON.stringify(updatedTasks)) {
+          this.tasks.next(updatedTasks);
+        }
+      })
+    );
   }
 
-  deleteTask(id: number) {  
-    return this.http.delete<Task>(this.requestURL + '/' + id, this.httpOptions);
-  }
-
-  updateTask(task: Task) {
-    return this.http.put<Task>(this.requestURL + '/' + task.id, task, this.httpOptions);
+  updateTask(task: Task): Observable<Task[]> {
+    return this.http.put<Task[]>(`${this.requestURL}/${task.id}`, task, this.httpOptions).pipe(
+      tap(updatedTasks => {
+        if (JSON.stringify(this.tasks.getValue()) !== JSON.stringify(updatedTasks)) {
+          this.tasks.next(updatedTasks);
+        }
+      })
+    );
   }
 
   getTask(id: number) {
     return this.http.get<Task>(this.requestURL + "/" + id);
   }
 
-  
 }
